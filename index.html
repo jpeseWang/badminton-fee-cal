@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badminton Fee Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-bold mb-4 text-center">Badminton Fee Calculator</h2>
+        
+        <label class="block text-sm font-medium text-gray-700">Shuttlecock Fee</label>
+        <input type="number" id="shuttlecockFee" class="w-full p-2 border rounded mb-3" placeholder="Enter shuttlecock fee">
+        
+        <label class="block text-sm font-medium text-gray-700">Court Fee</label>
+        <input type="number" id="courtFee" class="w-full p-2 border rounded mb-3" placeholder="Enter court fee">
+        
+        <label class="block text-sm font-medium text-gray-700">Number of Men</label>
+        <input type="number" id="menCount" class="w-full p-2 border rounded mb-3" placeholder="Enter number of men">
+        
+        <label class="block text-sm font-medium text-gray-700">Number of Women</label>
+        <input type="number" id="womenCount" class="w-full p-2 border rounded mb-3" placeholder="Enter number of women">
+        
+        <label class="block text-sm font-medium text-gray-700">Discount for Women (%)</label>
+        <input type="number" id="discount" class="w-full p-2 border rounded mb-3" placeholder="Enter discount percentage">
+        
+        <button onclick="calculateFee()" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Calculate</button>
+        
+        <div class="mt-4 p-4 bg-gray-50 rounded shadow">
+            <h3 class="text-lg font-semibold">Cost per Man: <span id="costPerMan" class="text-blue-600">0</span></h3>
+            <h3 class="text-lg font-semibold">Cost per Woman: <span id="costPerWoman" class="text-blue-600">0</span></h3>
+        </div>
+    </div>
+
+    <script>
+        function calculateFee() {
+            let shuttlecockFee = parseFloat(document.getElementById('shuttlecockFee').value) || 0;
+            let courtFee = parseFloat(document.getElementById('courtFee').value) || 0;
+            let menCount = parseInt(document.getElementById('menCount').value) || 0;
+            let womenCount = parseInt(document.getElementById('womenCount').value) || 0;
+            let discount = parseFloat(document.getElementById('discount').value) || 0;
+
+            let totalPlayers = menCount + womenCount;
+            if (totalPlayers === 0) {
+                document.getElementById('costPerMan').innerText = '0';
+                document.getElementById('costPerWoman').innerText = '0';
+                return;
+            }
+
+            let totalFee = shuttlecockFee + courtFee;
+            let totalWomenDiscount = (womenCount * discount) / 100;
+            let adjustedTotalFee = totalFee / (menCount + (womenCount * (1 - discount / 100)));
+            let costPerMan = adjustedTotalFee;
+            let costPerWoman = adjustedTotalFee * (1 - discount / 100);
+
+            document.getElementById('costPerMan').innerText = costPerMan.toFixed(2);
+            document.getElementById('costPerWoman').innerText = costPerWoman.toFixed(2);
+        }
+    </script>
+</body>
+</html>
